@@ -1,0 +1,84 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+name: Build and deploy Node.js app to Azure Web App - Echo-frontend
+on:
+  push:
+    branches:
+      - giri
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js version
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      
+      - name: Replace placeholders in config with secrets
+        run: |
+          sed -i "s|@cognito_host@|${{ secrets.COGNITO_HOST }}|g" config/application.config.common.js
+          sed -i "s|@aws_access_id@|${{ secrets.AWS_ACCESS_KEY_ID }}|g" config/application.config.common.js
+          sed -i "s|@aws_access_secret@|${{ secrets.AWS_SECRET_ACCESS_KEY }}|g" config/application.config.common.js
+          sed -i "s|@cognito_app_client_id@|${{ secrets.COGNITO_APP_CLIENT_ID }}|g" config/application.config.common.js
+          sed -i "s|@cognito_pool_id@|${{ secrets.COGNITO_POOL_ID }}|g" config/application.config.common.js
+          sed -i "s|@AppConfig.svc@|${{ secrets.APP_CONFIG_SVC }}|g" config/application.config.common.js
+          sed -i "s|@cognito_app_redirect_path@|${{ secrets.COGNITO_APP_REDIRECT_PATH }}|g" config/application.config.common.js
+          sed -i "s|@cognito_app_redirect_logout_path@|${{ secrets.COGNITO_APP_REDIRECT_LOGOUT_PATH }}|g" config/application.config.common.js
+          sed -i "s|@AppConfig.clarity_key@|${{ secrets.CLARITY_KEY }}|g" config/env/application.config.dev-2.js
+          sed -i "s|@AppConfig.frontend@|${{ secrets.BASEURL }}|g" config/env/application.config.dev-2.js
+          sed -i "s|@AppConfig.svc@|${{ secrets.APP_CONFIG_SVC }}|g" config/env/application.config.dev-2.js
+         
+      # - name: npm install, build, and test
+      #   run: |
+      #     npm install
+      #     npm run build
+      - name: Install dependencies with Yarn
+        run: |
+          yarn install --freeze-lockfile
+
+      - name: Build the project with Yarn
+        run: |
+          yarn build
+          
+      # - name: Verify build output directory
+      #   run: |
+      #     ls -al
+      #     ls -al .next # For server-side rendering
+      # - name: Copy static files
+      #   run: |
+      #     cp -R ./public ./.next/standalone/public
+      #     cp -R ./.next/static ./.next/standalone/.next/static
+      - name: Zip artifact for deployment
+        run: zip -r release.zip .
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: app
+          path: release.zip
+        
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: app
+      - name: Unzip artifact for deployment
+        run: unzip release.zip
+          
+      - name: 'Deploy to Azure Web App'
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: Echo-frontend
+          slot-name: 'Production'
+          package: .
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_23A38B2708524A4F80D6A9466BCC4164 }}
