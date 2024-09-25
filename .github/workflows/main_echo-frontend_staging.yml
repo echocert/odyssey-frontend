@@ -18,17 +18,17 @@ jobs:
       
       - name: Replace placeholders in config with secrets
         run: |
-          sed -i "s|@cognito_host@|${{ secrets.COGNITO_HOST_staging }}|g" config/application.config.common.js
-          sed -i "s|@aws_access_id@|${{ secrets.AWS_ACCESS_KEY_ID_staging }}|g" config/application.config.common.js
-          sed -i "s|@aws_access_secret@|${{ secrets.AWS_SECRET_ACCESS_KEY_staging }}|g" config/application.config.common.js
-          sed -i "s|@cognito_app_client_id@|${{ secrets.COGNITO_APP_CLIENT_ID_staging }}|g" config/application.config.common.js
-          sed -i "s|@cognito_pool_id@|${{ secrets.COGNITO_POOL_ID_staging }}|g" config/application.config.common.js
-          sed -i "s|@AppConfig.svc@|${{ secrets.APP_CONFIG_SVC_staging }}|g" config/application.config.common.js
-          sed -i "s|@cognito_app_redirect_path@|${{ secrets.COGNITO_APP_REDIRECT_PATH_staging }}|g" config/application.config.common.js
-          sed -i "s|@cognito_app_redirect_logout_path@|${{ secrets.COGNITO_APP_REDIRECT_LOGOUT_PATH_staging }}|g" config/application.config.common.js
-          sed -i "s|@AppConfig.clarity_key@|${{ secrets.CLARITY_KEY_staging }}|g" config/env/application.config.dev-2.js
-          sed -i "s|@AppConfig.frontend@|${{ secrets.BASEURL_staging }}|g" config/env/application.config.dev-2.js
-          sed -i "s|@AppConfig.svc@|${{ secrets.APP_CONFIG_SVC_staging }}|g" config/env/application.config.dev-2.js
+          sed -i "s|@cognito_host@|${{ secrets.COGNITO_HOST_STAGING }}|g" config/application.config.common.js
+          sed -i "s|@aws_access_id@|${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}|g" config/application.config.common.js
+          sed -i "s|@aws_access_secret@|${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}|g" config/application.config.common.js
+          sed -i "s|@cognito_app_client_id@|${{ secrets.COGNITO_APP_CLIENT_ID_STAGING }}|g" config/application.config.common.js
+          sed -i "s|@cognito_pool_id@|${{ secrets.COGNITO_POOL_ID_STAGING }}|g" config/application.config.common.js
+          sed -i "s|@AppConfig.svc@|${{ secrets.APP_CONFIG_SVC_STAGING }}|g" config/application.config.common.js
+          sed -i "s|@cognito_app_redirect_path@|${{ secrets.COGNITO_APP_REDIRECT_PATH_STAGING }}|g" config/application.config.common.js
+          sed -i "s|@cognito_app_redirect_logout_path@|${{ secrets.COGNITO_APP_REDIRECT_LOGOUT_PATH_STAGING }}|g" config/application.config.common.js
+          sed -i "s|@AppConfig.clarity_key@|${{ secrets.CLARITY_KEY_STAGING }}|g" config/env/application.config.dev-2.js
+          sed -i "s|@AppConfig.frontend@|${{ secrets.BASEURL_STAGING }}|g" config/env/application.config.dev-2.js
+          sed -i "s|@AppConfig.svc@|${{ secrets.APP_CONFIG_SVC_STAGING }}|g" config/env/application.config.dev-2.js
          
       # - name: npm install, build, and test
       #   run: |
@@ -81,4 +81,4 @@ jobs:
           app-name: Echo-frontend
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_staging }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_STAGING }}
