@@ -1,11 +1,12 @@
-import axios from "axios";
+
+import axiosInstance from "./axiosInstance.js";
 import AppConfig from "../../config/application.config";
 
 const fetchQuestionCodes = async (userInfo, questionnaire_id) => {
   // TODO: refactor the adapter functions to handle a 401 error, check the auth tokens, and redirect to login.
   // console.log(userInfo?.sub)
   try {
-    const { data } = await axios.get(
+    const { data } = await axiosInstance.get(
       AppConfig.svc + `all_question_code/`,
       {
         params: {
@@ -22,7 +23,7 @@ const fetchQuestionCodes = async (userInfo, questionnaire_id) => {
 const fetchForms = async (userInfo) => {
   // console.log(userInfo?.sub)
   try {
-    const { data } = await axios.get(
+    const { data } = await axiosInstance.get(
       AppConfig.svc + `view_form/`,
       {
         params: {
@@ -41,7 +42,7 @@ const addForm = async (file, userInfo) => {
   // console.log(file)
   // console.log(userInfo)
   try {
-    const { data } = await axios.post(
+    const { data } = await axiosInstance.post(
       AppConfig.svc + `add_form/`,
       file,
       {
@@ -60,7 +61,7 @@ const addField = async (field, userInfo) => {
   // console.log(field)
   // console.log(userInfo)
   try {
-    const { data } = await axios.post(
+    const { data } = await axiosInstance.post(
       AppConfig.svc + `create_field/`,
       field,
       {
@@ -77,7 +78,7 @@ const addField = async (field, userInfo) => {
 };
 const addMapping = async (mappings, userInfo) => {
   try {
-    const { data } = await axios.post(
+    const { data } = await axiosInstance.post(
       AppConfig.svc + `add_mapping/`,
       mappings,
       {
@@ -94,7 +95,7 @@ const addMapping = async (mappings, userInfo) => {
 };
 const removeMapping = async (formID, fieldID, userInfo) => {
   try {
-    const { data } = await axios.post(
+    const { data } = await axiosInstance.post(
       AppConfig.svc + `remove_mappings/`, {},
       {
         params: {
@@ -112,7 +113,7 @@ const removeMapping = async (formID, fieldID, userInfo) => {
 };
 const updateMapping = async (fieldID, formID, position, userInfo) => {
   try {
-    const { data } = await axios.post(
+    const { data } = await axiosInstance.post(
       AppConfig.svc + `update_mapping_position/`, {
       position
     },
@@ -132,7 +133,7 @@ const updateMapping = async (fieldID, formID, position, userInfo) => {
 };
 const getMappingByFormId = async (formId) => {
   try {
-    const { data } = await axios.get(
+    const { data } = await axiosInstance.get(
       AppConfig.svc + `mapping_by_form_id/`,
       {
         params: {
@@ -148,7 +149,7 @@ const getMappingByFormId = async (formId) => {
 };
 const deleteForm = async (userInfo, formId) => {
   try {
-    const { data } = await axios.delete(
+    const { data } = await axiosInstance.delete(
       AppConfig.svc + `delete/file/`,
       {
         params: {
@@ -164,7 +165,7 @@ const deleteForm = async (userInfo, formId) => {
 }
 const deleteFormField = async (field_id, userInfo) => {
   try {
-    const { data } = await axios.delete(
+    const { data } = await axiosInstance.delete(
       AppConfig.svc + `delete_field/`,
       {
         params: {
@@ -181,7 +182,7 @@ const deleteFormField = async (field_id, userInfo) => {
 const initializeQuestionnaireForFormMapping = async (form_name, userInfo) => {
   // console.log(form_name, userInfo)
   try {
-    const { data } = await axios.post(
+    const { data } = await axiosInstance.post(
       AppConfig.svc + "initialize_questionnaire_for_form_mapping/", {
       form_name: form_name
     },
@@ -202,7 +203,7 @@ const publishQuestionnaireAndMapField = async (userInfo, questionnaire_id, form_
   // console.log(questionnaire_id)
   // console.log(form_id)
   try {
-    const { data } = await axios.post(
+    const { data } = await axiosInstance.post(
       AppConfig.svc + "update_questionnaire_by_form_fields/", {},
       {
         params: {
@@ -223,7 +224,7 @@ const rejectForm = async (tenant_id, rental_id, formID, message) => {
   // console.log(rental_id)
   // console.log(formID)
   try {
-    const { data } = await axios.post(
+    const { data } = await axiosInstance.post(
       AppConfig.svc + "change_status_reject/", { message: message }, {
       params: {
         tenant_id,
